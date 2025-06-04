@@ -130,6 +130,7 @@ done
 ```
 This next script can be used to convert all the gene lists into fasta sequence files, by searching the proteomes for the sequences in the list.
 ```
+#!/bin/bash
 input_dir="path/to/your/directory"
 output_dir="path/to/output/directory"
 output_extension="_SEQ.fasta"
