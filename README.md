@@ -189,7 +189,7 @@ pxclsq -s input_align.fasta -o output_phyx.fasta -p 0.9
 ```
 Then run the output file through IQ-TREE. IQ-TREE is the biggest bottleneck so curate sequences carefully before this.
 Ensure all sequences desired are included before this step as the other steps can be quite fast & trivial once correctly installed.
--T command controls how many CPU cores iqtree uses (my laptop has 8, I usually use 6).
+-T command controls how many CPU cores iqtree uses (my laptop has 8, I usually use 6). If unsure, run -T AUTO. Sometimes it shouts at you for running short alignments with too many cores, AUTO tests the optimum number of threads.
 ```
 iqtree -s output_trim.fasta -st AA -m TEST -bb 10000 -nm 10000 -alrt 10000 -T 6
 ```
