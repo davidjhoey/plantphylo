@@ -3,7 +3,7 @@ Pipeline used regularly by David Hoey. Some scripts have been optimized with the
 
 Phylogenetics pipelines for assembly of gene trees
 
-Phylogeny guide for Ubuntu/MobaXTerm (Linux) or Windows - David Hoey - last updated 04/06/2025
+Phylogeny guide for Ubuntu/MobaXTerm (Linux) or Windows - David Hoey - last updated 21/08/2025
  
 # Installation of dependencies
 Suppose input file, eg, input.txt, is placed in C:\Users\yourname\DATA
@@ -203,9 +203,9 @@ pxclsq -s input_align.fasta -o output_phyx.fasta -p 0.9
 ```
 Then run the output file through IQ-TREE. IQ-TREE is the biggest bottleneck so curate sequences carefully before this.
 Ensure all sequences desired are included before this step as the other steps can be quite fast & trivial once correctly installed.
--T command controls how many CPU cores iqtree uses (my laptop has 8, I usually use 6). If unsure, run -T AUTO. Sometimes it shouts at you for running short alignments with too many cores, AUTO tests the optimum number of threads.
+-T command controls how many CPU cores iqtree uses. If unsure, run -T AUTO. Sometimes it shouts at you for running short alignments with too many cores, AUTO tests the optimum number of threads.
 ```
-iqtree -s output_trim.fasta -st AA -m TEST -bb 10000 -nm 10000 -alrt 10000 -T 6
+iqtree -s output_trim.fasta -st AA -m TEST -bb 10000 -nm 10000 -alrt 10000 -T AUTO
 ```
 For very large phylogenies, these can be carried out on the HPC.
 Place the above command leading to your trimmed file in an .sh file, and use the sbatch command (or follow other local guidelines) to place it in the node queue.
