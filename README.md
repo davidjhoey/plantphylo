@@ -84,7 +84,7 @@ pxclsq -s GARP_align.fasta -o output_phyx.fasta -p 0.9
 ```
 # Phylogenetics pipeline
 ## Curation and processing of sequences
-Can manually curate sequences or download in batches from various sources (e.g. by blast-ing sequences on SYMDB).
+Can manually curate sequences or download in batches from various sources (e.g. by blast-ing sequences on SYMDB https://www.polebio.lrsv.ups-tlse.fr/symdb/web/about).
 Try to get representatives from a broad selection of species, the less over-representation of one group, the better.
 If a particular genome is poorly annotated, this can cause problems with trimming (usually too much trimming if sequences are too divergent).
 Therefore, make sure all genomes being included are of decent quality.
