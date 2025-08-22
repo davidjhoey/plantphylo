@@ -6,6 +6,7 @@ Phylogenetics pipelines for assembly of gene trees
 Phylogeny guide for Ubuntu/MobaXTerm (Linux) or Windows - David Hoey - last updated 21/08/2025
  
 # Installation of dependencies
+## Very basic bash command line
 Suppose input file, eg, input.txt, is placed in C:\Users\yourname\DATA
 
 This folder can be accessed from Ubuntu as /mnt/c/Users/yourname/DATA
@@ -30,8 +31,7 @@ C:\Users\david\Documents\Work\Phylogenetics\in_progress becomes:
 ```
 cd /mnt/c/users/david/documents/work/in_silico_work/phylogenetics/in_progress
 ```
-Move files out of above folder once iqtree is finished.
-
+## Installations (conda/homebrew-based)
 Install Miniconda - either download directly from site and enter below code in directory containing file
 ```
 bash Miniconda3-latest-Linux-x86_64.sh
@@ -69,7 +69,7 @@ Specific phyx function for trimming is below
 ```
 pxclsq
 ```
-Having a large amount of missing data in a column of a supermatrix, may be due to errors
+Having a large amount of missing data in a column of a supermatrix may be due to errors
 in alignment or a variety of other factors. Therefore, removing highly ambiguous columns
 of data may help better estimate a model of evolution for a dataset. This program allows
 the user to specify a proportion of data that is required to be present (-p). The program
