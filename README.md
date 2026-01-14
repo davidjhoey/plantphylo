@@ -27,7 +27,6 @@ ls
 ```
 Use above to see environment - i.e. the contents of the directory that you are in.
 
-```
 ## Installations (conda/homebrew-based)
 Install Miniconda - either download directly from site and enter below code in directory containing file
 ```
