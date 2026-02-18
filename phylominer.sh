@@ -269,6 +269,19 @@ else
   sed -i 's/^\(>[^[:space:]]*\)_1\([[:space:]]\|$\)/\1\2/' "$query_prot"
 fi
 
+if [[ "$query_prot" == "$query" ]]; then
+  query_is_protein=true
+else
+  query_is_protein=false
+fi
+
+# Default output policy
+if [[ "$query_is_protein" == true ]]; then
+  keep_prot_out=true
+else
+  keep_prot_out=false
+fi
+
 ############################################
 # Helper functions
 ############################################
@@ -462,10 +475,19 @@ safe_count() {
 }
 
 is_nucleotide_fasta() {
-    local file="$1"
-    local non_nuc
-    non_nuc=$(grep -v '^>' "$file" | tr -d 'ACGTNacgtnRYSMKWBVDHrysmkwbvdh' | wc -c)
-    [[ $non_nuc -eq 0 ]]
+  local file="$1"
+  local seq
+  local nuc_frac
+
+  seq=$(grep -v '^>' "$file" | tr -d '\n' | head -c 50000)
+
+  [[ -z "$seq" ]] && return 1
+
+  nuc_frac=$(echo "$seq" \
+    | tr -cd 'ACGTUNacgtun' \
+    | awk -v len="${#seq}" '{ if (len==0) print 0; else print length/len }')
+
+  awk -v f="$nuc_frac" 'BEGIN { exit !(f >= 0.9) }'
 }
 
 
@@ -591,10 +613,14 @@ for cds_db in "$db_dir"/*.fa; do
     cds_final=0
   fi
 
-  if [[ "$db_is_nuc" == true ]]; then
+  if [[ "$db_is_nuc" == true && "$query_is_protein" == false ]]; then
 
   seqkit grep -n -f "$id_list_clean" "$cds_db_clean" > "$cds_out" || :
   cds_final=$(safe_count "$cds_out")
+  else
+  rm -f "$cds_out" 2>/dev/null || :
+  cds_final=0
+  fi
 
   if [[ "$cds_final" -eq 0 && -s "$prot_out" ]]; then
     echo "[INFO] CDS extraction failed for $base. Retrying with alternative ID strategy."
@@ -635,7 +661,6 @@ for cds_db in "$db_dir"/*.fa; do
       echo "[WARN] CDS extraction failed for $base after both alternative strategies. Please simplify gene identifiers for this database."
     fi
     
-  fi
   fi
 
   write_summary \
