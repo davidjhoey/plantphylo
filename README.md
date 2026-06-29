@@ -180,7 +180,7 @@ Alternatively, can run IQTREE on an HPC for very large phylogenies (>1000 seqs).
 For GRAS TFs, sequences from previously published phylogenetic analyses were used to assign clade names,
 and additional sequences were obtained from PlantTFDB. For many phylogenies, naming after Arabidopsis genes (or other genes with known functions) is a standard approach.
 
-# Analysis pipeline
+# Basic analysis pipeline
 
 Mafft alignment of sequences
 ```
@@ -212,3 +212,17 @@ Visualise treefiles with iTOL (interactive Tree Of Life). https://itol.embl.de/p
 Can produce some nice images with iTOL web server but can be slow with large phylogenies.
 FigTree is also a nice alternative but figures aren't as nice in my opinion.
 Include bootstrap values in all phylogeny figures! (Whether they are shown numerically or in other representation I don't really mind).
+
+## Improved analysis pipeline (updated June 2026)
+For some gene families, mafft default settings are not sufficient for appropriate alignment. For large and/or difficult families, try the following command for the mafft alignment. It takes quite a bit longer, but usually bootstraps from the end tree are improved. The pipeline as I am using it now is as follows:
+```
+mafft --localpair --maxiterate 1000 input.fasta > output_align.fasta
+```
+Then trim as normal:
+```
+trimal -in output_align.fasta -out output_trim.fasta -fasta -gappyout
+```
+And then the following IQ-TREE settings.
+```
+iqtree2 -s output_trim.fasta -m MFP -bb 10000 -ninit 10000 -T AUTO
+```
