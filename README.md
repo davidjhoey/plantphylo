@@ -289,7 +289,7 @@ Place the above command leading to your trimmed file in an .sh file, and use the
 Small phylogenies can be very fast when using many cores. 
 
 Visualise treefiles with iTOL (interactive Tree Of Life). https://itol.embl.de/personal_page.cgi
-Can produce some nice images with iTOL web server but can be slow with large phylogenies.
+You can produce some nice images with iTOL web server but it can be slow with large phylogenies.
 FigTree is also a nice alternative but figures aren't as nice in my opinion.
 Include bootstrap values in all phylogeny figures! (Whether they are shown numerically or in other representation I don't really mind).
 
