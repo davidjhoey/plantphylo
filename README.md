@@ -75,13 +75,12 @@ pxclsq -s GARP_align.fasta -o output_phyx.fasta -p 0.9
 ```
 # Phylogenetics pipeline
 ## Curation and processing of sequences
-Can manually curate sequences or download in batches from various sources (e.g. by blast-ing sequences on JGI Phytozome https://phytozome-next.jgi.doe.gov/, or SYMDB https://www.polebio.lrsv.ups-tlse.fr/symdb/web/about).
+You *can* manually curate sequences or download in batches from various sources (e.g. by blast-ing sequences on JGI Phytozome https://phytozome-next.jgi.doe.gov/, or SYMDB https://www.polebio.lrsv.ups-tlse.fr/symdb/web/about).
 However, manually collecting sequences is time-intensive, especially if you want gene representatatives from many species.
 It is best to get representatives from a broad selection of species, the less over-representation of one group, the better.
 If a particular genome is poorly annotated, this can cause problems with trimming (usually too much trimming if sequences are too divergent).
 Therefore, make sure all genomes being included are of decent quality.
-For a robust method for determining homologs in a genome, HMMER can be used. Most useful is the phmmer command,
-which can be used to find homologs of a query in a given proteome database.
+For a robust method for determining homologs in a genome, HMMER can be used. Most useful is the phmmer command, which can be used to find homologs of a query in a given proteome database.
 ```
 phmmer sequence_query.fasta proteome.fasta > query_phmmer_output.txt
 ```
