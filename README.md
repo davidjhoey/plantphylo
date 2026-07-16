@@ -164,6 +164,38 @@ It automates the above workflow which is commonly performed in comparative genom
 Identification of homologous genes across diverse species often involves a series of repetitive steps: searching databases, extracting matching sequences, filtering hits without the correct domains, and preparing datasets for phylogenetic analyses. Some gene families require the additional resolution provided by coding sequences, rather than amino acids. These tasks are frequently performed using command line tools and custom scripts, making analyses difficult to reproduce and adapt.
 `PhyloMiner` compiles these steps into a single, reproducible workflow. The search algorithms used are not new, but it provides a robust and convenient interface around widely accepted HMMER tools, allowing researchers to perform large-scale homology searches across many databases with minimal manual intervention.
 `Phylominer` has been developed primarily for comparative studies of plant genomes, including non-model and early version genomes, but is applicable to queries of any sort for any biological genomic datasets.
+## Diagram of workflow
+```
+Query sequence
+       │
+       ▼
+Determine database type
+(protein or nucleotide)
+       │
+       ├──────────────────────────────┐
+       │                              │
+       ▼                              ▼
+Protein database              Nucleotide database
+(use directly)                (translate to protein)
+       │                              │
+       └──────────────┬───────────────┘
+                      ▼
+               phmmer search
+                      │
+                      ▼
+           Candidate homologues
+                      │
+      (Optional) Pfam HMM filtering
+                      │
+                      ▼
+             Protein homologues
+                      │
+        If nucleotide database:
+             Extract CDS sequences
+                      │
+                      ▼
+   Protein FASTA + CDS FASTA + summary table
+```
 ## Help section
 ```
 Usage:
