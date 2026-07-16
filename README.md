@@ -224,5 +224,5 @@ trimal -in output_align.fasta -out output_trim.fasta -fasta -gappyout
 ```
 And then the following IQ-TREE settings.
 ```
-iqtree2 -s output_trim.fasta -m MFP -bb 10000 -ninit 10000 -T AUTO
+iqtree2 -s output_trim.fasta -m MFP -bb 10000 -ninit 10000 -nm 10000 -T AUTO
 ```
