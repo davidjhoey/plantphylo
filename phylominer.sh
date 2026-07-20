@@ -6,8 +6,9 @@ ORIGINAL_ARGS=("$@")
 
 usage() {
   cat <<'EOF'
+PhyloMiner v1.2.1
 Usage:
-  phylominer.sh [options] query.fasta /path/to/databases
+  ./phylominer.sh [options] query.fasta /path/to/databases
 
 Required:
   query.fasta              Protein or CDS FASTA query
