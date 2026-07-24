@@ -6,21 +6,22 @@ ORIGINAL_ARGS=("$@")
 
 usage() {
   cat <<'EOF'
-PhyloMiner v1.2.1
+PhyloMiner v1.2.2
 Usage:
   ./phylominer.sh [options] query.fasta /path/to/databases
 
 Required:
-  query.fasta              Protein or CDS FASTA query
-  /path/to/databases       Directory containing FASTA databases
+  query.fasta                 Protein or CDS FASTA query
+  /path/to/databases          Directory containing FASTA databases
 
 Options:
-  -f                       Overwrite existing outputs
-  --threads N              Number of threads for phmmer and hmmsearch (default: 1)
-  --keep-temp              Keep translated files, hit lists, and search tables
-  --motif-hmm HMM_ID       Filter extracted proteins by HMM profile
-  --pfam-db PATH           HMM database for --motif-hmm
-  -h, --help               Show this help message and exit
+  -f                          Overwrite existing outputs
+  --threads N                 Number of threads for phmmer and hmmsearch (default: 1)
+  --keep-temp                 Keep translated files, hit lists, and search tables
+  --include-below-threshold   Retain phmmer hits below the default HMMER inclusion threshold
+  --motif-hmm HMM_ID          Filter extracted proteins by HMM profile
+  --pfam-db PATH              HMM database for --motif-hmm
+  -h, --help                  Show this help message and exit
 
 Notes:
   - If the query is nucleotide, it is translated with transeq using frame 1.
@@ -157,6 +158,55 @@ extract_ids_from_phmmer() {
     ' "$input" | sort -u > "$output"
 
     [[ -s "$output" ]] || touch "$output"
+}
+
+extract_ids_from_phmmer_include_below_threshold() {
+  local input="$1"
+  local output="$2"
+
+  awk '
+    BEGIN {
+      inblock=0
+      header_seen=0
+      seqcol=0
+    }
+
+    /Scores[[:space:]]+for[[:space:]]+complete[[:space:]]+sequences/ {
+      inblock=1
+      header_seen=0
+      seqcol=0
+      next
+    }
+
+    inblock && /^[[:space:]]*$/ {
+      inblock=0
+      next
+    }
+
+    inblock {
+      sub(/\r$/, "", $0)
+
+      if ($0 ~ /---[[:space:]]+full[[:space:]]+sequence[[:space:]]+---/) next
+      if ($0 ~ /^[[:space:]]*-{2,}([[:space:]]+-{2,})+/) next
+
+      if (header_seen==0 && $1=="E-value") {
+        for (i=1; i<=NF; i++)
+          if ($i=="Sequence") seqcol=i
+        header_seen=1
+        next
+      }
+
+      if (header_seen==1 && seqcol>0) {
+        if (NF>=seqcol) {
+          val=$(seqcol)
+          if (val !~ /^-+$/ && val!="Sequence" && val!="")
+            print val
+        }
+      }
+    }
+  ' "$input" | sort -u > "$output"
+
+  [[ -s "$output" ]] || touch "$output"
 }
 
 extract_ids_from_hmmsearch() {
@@ -333,7 +383,8 @@ KEEP_TEMP=false
 THREADS=1
 PFAM_DB=""
 MOTIF_HMMS=()
-VERSION="1.2.1"
+VERSION="1.2.2"
+INCLUDE_BELOW_THRESHOLD=false
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -342,6 +393,7 @@ while [[ $# -gt 0 ]]; do
     --keep-temp) KEEP_TEMP=true; shift ;;
     --motif-hmm) MOTIF_HMMS+=("${2:?Missing value for --motif-hmm}"); shift 2 ;;
     --pfam-db) PFAM_DB="${2:?Missing value for --pfam-db}"; shift 2 ;;
+    --include-below-threshold) INCLUDE_BELOW_THRESHOLD=true; shift ;;
     -h|--help) usage; exit 0 ;;
     -*) echo "ERROR: unknown option: $1" >&2; usage; exit 1 ;;
     *) break ;;
@@ -410,10 +462,11 @@ LOG_FILE="$BASE_DIR/phylominer.txt"
   echo
   echo
   echo "Run settings:"
-  echo "  Threads      : $THREADS"
-  echo "  Force        : $FORCE"
-  echo "  Keep temp    : $KEEP_TEMP"
-  echo "  Pfam database: ${PFAM_DB:-None}"
+  echo "  Threads                   : $THREADS"
+  echo "  Force                     : $FORCE"
+  echo "  Keep temp                 : $KEEP_TEMP"
+  echo "  Include below threshold   : $INCLUDE_BELOW_THRESHOLD"
+  echo "  Pfam database             : ${PFAM_DB:-None}"
 
   if [[ ${#MOTIF_HMMS[@]} -gt 0 ]]; then
     echo "  Motif HMMs   : ${MOTIF_HMMS[*]}"
@@ -544,7 +597,7 @@ for db in "${DB_FILES[@]}"; do
     continue
   fi
 
-  PHMMER_BELOW_THRESHOLD=$(awk '/inclusion threshold/{f=1;next} f&&NF{c++} END{print c+0}' "$PHMMER_TXT" 2>/dev/null || echo 0)
+  PHMMER_BELOW_THRESHOLD=$(awk '/inclusion threshold/{f=1;next} f&&/^$/{exit} f&&$1~/^[0-9.eE+-]+$/{c++} END{print c+0}' "$PHMMER_TXT" 2>/dev/null || echo 0)
 
   if [[ ! -s "$PHMMER_TBL" ]] || [[ $(grep -vc '^#' "$PHMMER_TBL" || true) -eq 0 ]]; then
     echo "[INFO] No phmmer hits for $name"
@@ -552,7 +605,11 @@ for db in "${DB_FILES[@]}"; do
     continue
   fi
 
-  extract_ids_from_phmmer "$PHMMER_TXT" "$ID_LIST"
+  if [[ "$INCLUDE_BELOW_THRESHOLD" == true ]]; then
+    extract_ids_from_phmmer_include_below_threshold "$PHMMER_TXT" "$ID_LIST"
+  else
+    extract_ids_from_phmmer "$PHMMER_TXT" "$ID_LIST"
+  fi
   PHMMER_HITS=$(wc -l < "$ID_LIST" | tr -d ' ')
   echo "[INFO] PHMMER hits: $PHMMER_HITS"
 
