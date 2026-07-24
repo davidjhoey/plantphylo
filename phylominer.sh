@@ -600,8 +600,8 @@ for db in "${DB_FILES[@]}"; do
   PHMMER_BELOW_THRESHOLD=$(awk '/inclusion threshold/{f=1;next} f&&/^$/{exit} f&&$1~/^[0-9.eE+-]+$/{c++} END{print c+0}' "$PHMMER_TXT" 2>/dev/null || echo 0)
 
   if [[ ! -s "$PHMMER_TBL" ]] || [[ $(grep -vc '^#' "$PHMMER_TBL" || true) -eq 0 ]]; then
-    echo "[INFO] No phmmer hits for $name"
-    printf '%s,%s,0,0,0,0,0,0,no,no\n' "$name" "$TOTAL_SEQS" >> "$SUMMARY_CSV"
+    echo "[INFO] No above-threshold phmmer hits for $name"
+    printf '%s,%s,0,%s,0,0,0,0,no,no\n' "$name" "$TOTAL_SEQS" "$PHMMER_BELOW_THRESHOLD" >> "$SUMMARY_CSV"
     continue
   fi
 
@@ -615,7 +615,7 @@ for db in "${DB_FILES[@]}"; do
 
   if [[ "$PHMMER_HITS" -eq 0 ]]; then
     echo "[INFO] No phmmer hits for $name"
-    printf '%s,%s,0,0,0,0,0,0,no,no\n' "$name" "$TOTAL_SEQS" >> "$SUMMARY_CSV"
+    printf '%s,%s,0,%s,0,0,0,0,no,no\n' "$name" "$TOTAL_SEQS" "$PHMMER_BELOW_THRESHOLD" >> "$SUMMARY_CSV"
     continue
   fi
 
