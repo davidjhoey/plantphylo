@@ -160,6 +160,7 @@ It automates the above workflow which is commonly performed in comparative genom
 - PhyloMiner is designed to work with difficult datasets for broad usage across genomes for comparative evolutionary studies. It handles weird or inconsistent gene identifiers and automatically detects if the query/database is protein or nucleotide.
 - If CDS is provided, it is translated to protein using `transeq`, and this is the database which is searched. If a protein database is provided, it is searched directly. `PhyloMiner` takes the above-threshold homolog hits from `phmmer` (+ optional Pfam domain filtering), and puts these into a list. This list is then used to produce a fasta file containing only these sequences, using `seqkit`. If the original database provided was coding sequence, `PhyloMiner` will output both the protein hits, and a separate file containing the equivalent original CDS sequences.
 - Reporting: `PhyloMiner` also outputs a table of hits from your databases (very useful for basic presence/absence analyses), and a text file produced by the analysis script (contains version used and the original command for the run). There is also an option to retain all intermediate files, in case you would like to check things are working properly.
+- There is also an option to retain all hits, not just the above threshold hits. This can be useful for finding more distantly related genes if trying to trace the evolutionary history of a family. This option can also be nice if used alongside a HMM filter, as you are likely to find homologs which were being excluded by the threshold but have your domain of interest.
 ## Motivation
 Identification of homologous genes across diverse species often involves a series of repetitive steps: searching databases, extracting matching sequences, filtering hits without the correct domains, and preparing datasets for phylogenetic analyses. Some gene families require the additional resolution provided by coding sequences, rather than amino acids. These tasks are frequently performed using command line tools and custom scripts, making analyses difficult to reproduce and adapt.
 `PhyloMiner` compiles these steps into a single, reproducible workflow. The search algorithms used are not new, but it provides a robust and convenient interface around widely accepted HMMER tools, allowing researchers to perform large-scale homology searches across many databases with minimal manual intervention.
@@ -198,21 +199,22 @@ Protein database              Nucleotide database
 ```
 ## Help section
 ```
-PhyloMiner v1.2.1
+PhyloMiner v1.2.2
 Usage:
   ./phylominer.sh [options] query.fasta /path/to/databases
 
 Required:
-  query.fasta              Protein or CDS FASTA query
-  /path/to/databases       Directory containing FASTA databases
+  query.fasta                 Protein or CDS FASTA query
+  /path/to/databases          Directory containing FASTA databases
 
 Options:
-  -f                       Overwrite existing outputs
-  --threads N              Number of threads for phmmer and hmmsearch (default: 1)
-  --keep-temp              Keep translated files, hit lists, and search tables
-  --motif-hmm HMM_ID       Filter extracted proteins by HMM profile
-  --pfam-db PATH           HMM database for --motif-hmm
-  -h, --help               Show this help message and exit
+  -f                          Overwrite existing outputs
+  --threads N                 Number of threads for phmmer and hmmsearch (default: 1)
+  --keep-temp                 Keep translated files, hit lists, and search tables
+  --include-below-threshold   Retain phmmer hits below the default HMMER inclusion threshold
+  --motif-hmm HMM_ID          Filter extracted proteins by HMM profile
+  --pfam-db PATH              HMM database for --motif-hmm
+  -h, --help                  Show this help message and exit
 
 Notes:
   - If the query is nucleotide, it is translated with transeq using frame 1.
@@ -220,8 +222,8 @@ Notes:
   - If a database is nucleotide, a protein FASTA and a CDS FASTA are both written.
   - HMM filtering is applied after phmmer hit extraction.
   - Input databases should be .fa format (these are protected from deletion).
-  - DEPENDENCIES: HMMER (phmmer, hmmsearch, hmmfetch), EMBOSS (transeq), SeqKit (seqkit).
-  - If using HMM profile filtering, download Pfam-A.hmm from https://www.ebi.ac.uk/interpro/download/Pfam/ (last accessed 02-07-2026)
+  - DEPENDENCIES: HMMER (phmmer, hmmsearch, hmmfetch), EMBOSS (transeq), SeqKit (seqkit). 
+  - If using HMM profile filtering, download Pfam-A.hmm from https://www.ebi.ac.uk/interpro/download/Pfam/ (last accessed 02-07-2026).
 ```
 In order to run `PhyloMiner`, you may need to make the file executable. I am hoping to compile this into a package one day but for now you can use the shell script.
 To make `PhyloMiner` executable, run the following:
