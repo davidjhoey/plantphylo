@@ -227,6 +227,7 @@ The most common causes of bad phylogenies are:
 - Including truncated or mis-annotated proteins
 - Poor alignments
 - Over-trimming or under-trimming
+
 When a tree looks unusual, the problem is most likely input data rather than the phylogenetic algorithm.
 
 ## Other useful commands
@@ -241,7 +242,7 @@ seqtk subseq input.fasta name.list > output.fasta
 
 ## Further resources
 - PhyloMiner repository for automated homology mining. https://github.com/davidjhoey/PhyloMiner
-- HMMER documentation. https://github.com/EddyRivasLab/hmmer, cite: https://doi.org/10.1371/journal.pcbi.1002195
+- HMMER documentation. https://github.com/EddyRivasLab/hmmer, cite: doi.org/10.1371/journal.pcbi.1002195
 - MAFFT documentation. https://mafft.cbrc.jp/alignment/software/manual/manual.html, cite: doi:10.1093/molbev/mst010
-- IQ-TREE documentation. https://iqtree.github.io/doc/, cite https://doi.org/10.1093/molbev/msaa015
-- trimAl documentation. https://trimal.readthedocs.io/en/latest/, cite: https://doi.org/10.1093/bioinformatics/btp348
+- IQ-TREE documentation. https://iqtree.github.io/doc/, cite: doi.org/10.1093/molbev/msaa015
+- trimAl documentation. https://trimal.readthedocs.io/en/latest/, cite: doi.org/10.1093/bioinformatics/btp348
