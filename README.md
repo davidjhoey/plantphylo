@@ -41,11 +41,12 @@ Or input below code directly
 curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 sh Miniconda3-latest-Linux-x86_64.sh
 ```
-Add channel configurations in this order (bioconda contains `HMMER`, `mafft`, `trimAl`, and `iqtree`)
+Add channel configurations (bioconda contains `HMMER`, `mafft`, `trimAl`, and `iqtree`)
 ```
 conda config --add channels defaults
 conda config --add channels bioconda
 conda config --add channels conda-forge
+conda config --add channels biocore
 ```
 Install necessary functions with the following command:
 ```
@@ -55,7 +56,7 @@ Other important bioinformatics programs, such as blast, can also be installed wi
 ```
 conda install blast
 ```
-OPTIONAL: Install homebrew if using `phyx` for trimming. You don't absolutely need this if you have trimal already installed. `phyx` is just good for highly customisable trimming.
+**OPTIONAL**: Install homebrew if using `phyx` for trimming. You don't absolutely need this if you have `trimal` already installed. `phyx` is just good for highly customisable trimming.
 ```
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 brew install brewsci/bio/phyx
@@ -87,7 +88,7 @@ Infer phylogenetic tree
 Interpret evolutionary relationships
 ```
 
-## 1. Finding homologs
+# 1. Finding homologs
 There are several ways to collect sequences. For small datasets, sequences can be downloaded from databases such as:
 - JGI Phytozome (https://phytozome-next.jgi.doe.gov/)
 - PlantTFDB (https://planttfdb.gao-lab.org/family.php?fam)
@@ -96,7 +97,7 @@ There are several ways to collect sequences. For small datasets, sequences can b
 (Last accessed July 2026).
 However, manually collecting sequences is time-intensive and rapidly becomes impractical.
 
-For a robust method for determining homologs in a genome, HMMER can be used. Most useful is the phmmer command, which can be used to find homologs of a query in a given proteome database:
+For a robust method for determining homologs in a genome, HMMER can be used. Most useful is the `phmmer` command, which can be used to find homologs of a query in a given proteome database:
 ```
 phmmer sequence_query.fasta proteome.fasta > query_phmmer_output.txt
 ```
