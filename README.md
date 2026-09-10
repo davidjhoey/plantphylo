@@ -1,6 +1,6 @@
 # Molecular Phylogenetics Guide
 This is a practical guide for identifying homologous genes and constructing phylogenetic trees using command line tools. This guide is intended to be from basics, and is aimed at students working with plant genomes - but the workflow is applicable to any gene family. This guide also assumes a Linux environment (Ubuntu/WSL or MobaXTerm on Windows), although most commands should also work on MacOS.
-This pipeline is used regularly by David Hoey. Some scripts have been optimised with the aid of ChatGPT.
+This pipeline is used regularly by David Hoey. Some scripts have been optimised with the assistance of GPT.
 
 # Software installation
 ## Very basic bash command line
@@ -212,10 +212,11 @@ end;
 iqtree2 -s cds_trim.fasta -p part.nex -m MFP+MERGE -bb 10000 -nm 10000 -alrt 10000 -T AUTO
 ```
 This should improve branch lengths and bootstrap values substantially.
-## 5.c) Optimising alignments and trimming for better trees.
+
+## 5.c) Optimising alignments and trimming for better trees (making the best of a bad bunch!)
 Let's say you have done all of the above and your bootstraps are still a bit rubbish, or you don't think you have resolved the tree fully yet.
-Try first adding or removing some genomes (perhaps some of the less well established genomes which you added are causing problems with aligning or trimming?).
-Some gene families are indeed just a bit tricky, and require some more systematic analysis of alignments and trimming algorithms.
+Try first adding or removing some genomes (perhaps some of the less well established genomes which you added are causing problems with aligning or trimming?). Sometimes a single mid-quality genome has messed up my alignments completely. Usually the problem is that they are too short after trimming for decent inference.
+But - some gene families are indeed just a bit tricky, and require some more systematic analysis of alignments and trimming algorithms.
 So, let's do that. First, try a few different algorithms from `mafft`.
 ```
 mkdir align_test
@@ -238,6 +239,18 @@ Now you can have a look at the length of each alignment: see which ones are over
 seqkit stats *_gappyout.fasta *_automated1.fasta
 ```
 In general the alignment which is preserving most of the sequence will produce the better tree. Better still if you use this alignment for a CDS tree. 
+Look at this example - only the `--globalpair` alignment will produce a good tree for this gene family!
+```
+file                    format  type     num_seqs  sum_len  min_len  avg_len  max_len
+auto_gappyout.fasta     FASTA   Protein       359   10,052       28       28       28
+einsi_gappyout.fasta    FASTA   Protein       361   11,552       32       32       32
+ginsi_gappyout.fasta    FASTA   Protein       370  304,880      824      824      824
+linsi_gappyout.fasta    FASTA   Protein       360   11,160       31       31       31
+auto_automated1.fasta   FASTA   Protein       357    4,284       12       12       12
+einsi_automated1.fasta  FASTA   Protein       360    7,920       22       22       22
+ginsi_automated1.fasta  FASTA   Protein       370  204,980      554      554      554
+linsi_automated1.fasta  FASTA   Protein       359    8,616       24       24       24
+```
 
 # 6. Visualising trees
 
