@@ -212,11 +212,37 @@ end;
 iqtree2 -s cds_trim.fasta -p part.nex -m MFP+MERGE -bb 10000 -nm 10000 -alrt 10000 -T AUTO
 ```
 This should improve branch lengths and bootstrap values substantially.
+## 5.c) Optimising alignments and trimming for better trees.
+Let's say you have done all of the above and your bootstraps are still a bit rubbish, or you don't think you have resolved the tree fully yet.
+Try first adding or removing some genomes (perhaps some of the less well established genomes which you added are causing problems with aligning or trimming?).
+Some gene families are indeed just a bit tricky, and require some more systematic analysis of alignments and trimming algorithms.
+So, let's do that. First, try a few different algorithms from `mafft`.
+```
+mkdir align_test
+mafft --auto input_protein_combined.fasta > align_test/auto.fasta
+mafft --localpair --maxiterate 1000 input_protein_combined.fasta > align_test/linsi.fasta
+mafft --globalpair --maxiterate 1000 input_protein_combined.fasta > align_test/ginsi.fasta
+mafft --ep 0 --genafpair --maxiterate 1000 input_protein_combined.fasta > align_test/einsi.fasta
+```
+Once that is finished, try different trimming algorithms on all of these.
+```
+cd align_test
+for f in *.fasta; do
+    base=${f%.fasta}
+    trimal -in "$f" -out "${base}_gappyout.fasta" -gappyout
+    trimal -in "$f" -out "${base}_automated1.fasta" -automated1
+done
+```
+Now you can have a look at the length of each alignment: see which ones are over trimmed, poorly aligned, etc.
+```
+seqkit stats *_gappyout.fasta *_automated1.fasta
+```
+In general the alignment which is preserving most of the sequence will produce the better tree. Better still if you use this alignment for a CDS tree. 
 
 # 6. Visualising trees
 
 Visualise treefiles with iTOL (interactive Tree Of Life). https://itol.embl.de/personal_page.cgi
-You can produce some nice images with iTOL web server but it can be slow with very large phylogenies. Its most recent iterations are very good.
+You can produce some nice images with iTOL web server, its most recent iterations are very good even for large trees.
 `FigTree` is also a nice alternative but figures aren't as nice in my opinion.
 Include bootstrap values in all phylogeny figures! (Whether they are shown numerically or in other representation I don't really mind).
 If bootstraps are low, you may still be able to use the tree, but be very careful with your interpretation of low support nodes.
