@@ -214,8 +214,10 @@ iqtree2 -s cds_trim.fasta -p part.nex -m MFP+MERGE -bb 10000 -nm 10000 -alrt 100
 This should improve branch lengths and bootstrap values substantially.
 
 ## 5.c) Optimising alignments and trimming for better trees (making the best of a bad bunch!)
+Making a phylogeny is an iterative process. 
 Let's say you have done all of the above and your bootstraps are still a bit rubbish, or you don't think you have resolved the tree fully yet.
-Try first adding or removing some genomes (perhaps some of the less well established genomes which you added are causing problems with aligning or trimming?). Sometimes a single mid-quality genome has messed up my alignments completely. Usually the problem is that they are too short after trimming for decent inference.
+Try first adding or removing some genomes (perhaps some of the less well established genomes which you added are causing problems with aligning or trimming?). 
+Sometimes a single mid-quality genome has messed up my alignments completely. Usually the problem is that they are too short after trimming for decent inference.
 But - some gene families are indeed just a bit tricky, and require some more systematic analysis of alignments and trimming algorithms.
 So, let's do that. First, try a few different algorithms from `mafft`.
 ```
