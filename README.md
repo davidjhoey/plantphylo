@@ -1,6 +1,6 @@
 # Molecular Phylogenetics Guide
-This is a practical guide for identifying homologous genes and constructing phylogenetic trees using command line tools. This guide is intended to be from basics, and is aimed at students working with plant genomes - but the workflow is applicable to any gene family. This guide also assumes a Linux environment (Ubuntu/WSL or MobaXTerm on Windows), although most commands should also work on MacOS.
-This pipeline is used regularly by David Hoey. Some scripts have been optimised with the assistance of GPT.
+This is a practical guide for identifying homologous genes and constructing phylogenetic trees using command line tools. This guide is intended to be from basics, and is aimed at students working with plant genomes - but the workflow is applicable to **any gene family**. This guide also assumes a Linux environment (Ubuntu/WSL or MobaXTerm on Windows), although most commands should also work on MacOS terminal.
+This pipeline is used regularly by David Hoey.
 
 # Software installation
 ## Very basic bash command line
@@ -113,7 +113,13 @@ Some general recommendations:
 - Under ~350 sequences can run fairly quickly locally on a laptop - this is about 1h of running on a normal laptop (this obviously scales with the more input sequences).
 
 ## Combining fasta files
-The following script can be used for combining all fasta files in a directory, for a large phylogeny. I find this very helpful when playing around with my species set.
+For producing alignments and trees you will need to know how to combine `.fasta` files.
+The easiest way to do this is to use the `cat` command, to concatenate your files (i.e. to append them one after another).
+To concatenate all `.fasta` files in a directory into a single file:
+```
+cat *.fasta > combined.fasta
+```
+The following script can be used for combining all fasta files in a directory, for a large phylogeny. I find this very helpful when playing around with my species set. But if you are happy with using the above command instead, go ahead and do that. I prefer the below as it gives you some control over directories.
 ```
 #!/bin/bash
 
@@ -130,11 +136,8 @@ done
 
 echo "All files combined into $output_file"
 ```
-**Make sure that each input file has an extra return line at the bottom, or fasta files will be combined improperly.**
-There are more simple ways to do this, but I prefer the above as it gives you some control over the directories. More simply:
-```
-cat *.fasta > combined.fasta
-```
+**Make sure that each input file has a return line at the bottom, or fasta files may be combined improperly.**
+
 # 3. Multiple sequence alignment
 To make your gene tree, you need to align your sequences using MAFFT or a similar multiple sequence alignment software.
 For most datasets the following is sufficient:
@@ -281,6 +284,9 @@ For extracting sequences by gene identifier:
 ```
 seqtk subseq input.fasta name.list > output.fasta
 ```
+
+## Notes on the use of AI
+Large language models can be very helpful in troubleshooting bioinformatic pipelines, and I have used them for this purpose often. But, do not be overly reliant on them: they have some major limitations particularly when building large or complex pipelines. Examine and interpret your trees yourself and be skeptical of low support branches. 
 
 ## Further resources
 - PhyloMiner repository for automated homology mining. https://github.com/davidjhoey/PhyloMiner
