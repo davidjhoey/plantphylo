@@ -105,7 +105,7 @@ Some general recommendations:
 - If a particular genome is poorly annotated, this can cause problems with trimming (usually too much trimming if sequences are too divergent). Therefore, make sure all genomes being included are of a decent quality.
 - Ideally have one representative splice isoform per gene.
 - Check that predicted proteins contain the expected conserved domains (`PhyloDig` Pfam filtering can do this).
-- Under ~350 sequences can run fairly quickly locally on a laptop - this is about 1h of running on a normal laptop (this obviously scales with the more input sequences).
+- Small trees can run fairly quickly on a fairly standard laptop or computer. Large phylogenies (>1000 sequences) may require running overnight or on a computer cluster.
 
 ## Combining fasta files
 For producing alignments and trees you will need to know how to combine `.fasta` files.
