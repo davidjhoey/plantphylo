@@ -101,7 +101,7 @@ For a robust method for determining homologs in a genome, HMMER can be used. Mos
 ```
 phmmer sequence_query.fasta proteome.fasta > query_phmmer_output.txt
 ```
-However, for projects involving many genomes, I recommend using **PhyloMiner**, which automates homology searches, optional Pfam filtering, and sequence extraction.
+However, for projects involving many genomes, I recommend using **PhyloDig**, which automates homology searches, optional Pfam filtering, and sequence extraction.
 
 # 2. Sequence curation
 Good phylogenies depend more on careful sequence selection than on sophisticated tree-building methods. 
@@ -109,7 +109,7 @@ Some general recommendations:
 - It is best to get representatives from a broad selection of species, the less over-representation of one group, the better.
 - If a particular genome is poorly annotated, this can cause problems with trimming (usually too much trimming if sequences are too divergent). Therefore, make sure all genomes being included are of a decent quality.
 - Ideally have one representative splice isoform per gene.
-- Check that predicted proteins contain the expected conserved domains (`Phylominer` Pfam filtering can do this).
+- Check that predicted proteins contain the expected conserved domains (`PhyloDig` Pfam filtering can do this).
 - Under ~350 sequences can run fairly quickly locally on a laptop - this is about 1h of running on a normal laptop (this obviously scales with the more input sequences).
 
 ## Combining fasta files
@@ -177,7 +177,7 @@ iqtree2 -s output_trim.fasta -m MFP -bb 10000 -ninit 10000 -nm 10000 -T AUTO
 ## 5.b) CDS trees
 - Sometimes, domains are small and automated trimming removes too much info from amino acid alignments. 
 - It is sometimes necessary to produce an alignment using coding sequences, which preserve 3x more information (3 nucleotides = 1 AA). Furthermore, each nucleotide in a codon evolves at different rates, so different evolutionary models can be applied to each one in order to improve your tree inference.
-- You need a `.fasta` file with all of your coding sequences which you would like to align in it, and a matching file with all of the protein sequences using the same sequence headers. (**Hint**: you can use `PhyloMiner` to produce this!).
+- You need a `.fasta` file with all of your coding sequences which you would like to align in it, and a matching file with all of the protein sequences using the same sequence headers. (**Hint**: you can use `PhyloDig` to produce this!).
 - If you have the coding sequence file you can use `transeq` (EMBOSS) to produce it. Make sure to include the `-trim` option (important for `pal2nal` compatibility).
 ```
   transeq -sequence cds.fasta -outseq prot.fasta -trim -frame 1
@@ -289,7 +289,7 @@ seqtk subseq input.fasta name.list > output.fasta
 Large language models can be very helpful in troubleshooting bioinformatic pipelines, and I have used them for this purpose often. But, do not be overly reliant on them: they have some major limitations particularly when building large or complex pipelines. Examine and interpret your trees yourself and be skeptical of low support branches. 
 
 ## Further resources
-- PhyloMiner repository for automated homology mining. https://github.com/davidjhoey/PhyloMiner
+- PhyloDig repository for automated homology mining. https://github.com/davidjhoey/Phylodig
 - HMMER documentation. https://github.com/EddyRivasLab/hmmer, cite: doi.org/10.1371/journal.pcbi.1002195
 - MAFFT documentation. https://mafft.cbrc.jp/alignment/software/manual/manual.html, cite: doi:10.1093/molbev/mst010
 - PAL2NAL documentation. https://github.com/liaochenlanruo/PAL2NAL, cite: doi.org/10.1093/nar/gkl315
