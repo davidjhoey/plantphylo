@@ -26,7 +26,7 @@ Use above to see environment - i.e. the contents of the directory that you are i
 Install the following programs before beginning:
 
 - MAFFT (multiple sequence alignment)
-- trimAl (alignment trimming)
+- trimAL (alignment trimming)
 - IQ-TREE2 (phylogenetic inference)
 - HMMER (homology searches)
 - SeqKit (sequence extraction)
@@ -41,7 +41,7 @@ Or input below code directly
 curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 sh Miniconda3-latest-Linux-x86_64.sh
 ```
-Add channel configurations (bioconda contains `HMMER`, `mafft`, `trimAl`, and `iqtree`)
+Add channel configurations (bioconda contains `HMMER`, `mafft`, `trimAL`, and `iqtree`)
 ```
 conda config --add channels defaults
 conda config --add channels bioconda
@@ -55,11 +55,6 @@ conda install mafft trimal iqtree hmmer seqkit emboss pal2nal
 Other important bioinformatics programs, such as blast, can also be installed with the `conda install` command.
 ```
 conda install blast
-```
-**OPTIONAL**: Install homebrew if using `phyx` for trimming. You don't absolutely need this if you have `trimal` already installed. `phyx` is just good for highly customisable trimming.
-```
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-brew install brewsci/bio/phyx
 ```
 
 # Phylogenetics pipeline
@@ -157,11 +152,12 @@ You can also try the automated settings or other options.
 ```
 trimal -in input.file -out output.file -fasta -automated1
 ```
-Alternatively, you can use `phyx`, which provides more control on the % trimmed out:
+With the gap threshold `-gt` option, you can manually set how much you want to trim off. 
+For example, `-gt 0.8` will remove a column if >20% are gaps.
 ```
-pxclsq -s alignment.fasta -o trimmed.fasta -p 0.9
+trimal -in input.file -out input.file -gt 0.8
 ```
-No trimming method is universally optimal. Always inspect the alignment if the results appear unexpected.
+No trimming method is universally optimal. Always inspect the alignment if the results appear unexpected. There are other trimming softwares out there such as `phyx` but I mainly use trimAL 
 
 # 5. Phylogenetic inference
 Once you are happy with your trimming and sequence selection, you can now produce your gene tree using IQ-TREE2. 
@@ -261,7 +257,7 @@ linsi_automated1.fasta  FASTA   Protein       359    8,616       24       24    
 
 Visualise treefiles with iTOL (interactive Tree Of Life). https://itol.embl.de/personal_page.cgi
 You can produce some nice images with iTOL web server, its most recent iterations are very good even for large trees.
-`FigTree` is also a nice alternative but figures aren't as nice in my opinion.
+`FigTree` is also a nice alternative but I don't use this as much.
 Include bootstrap values in all phylogeny figures! (Whether they are shown numerically or in other representation I don't really mind).
 If bootstraps are low, you may still be able to use the tree, but be very careful with your interpretation of low support nodes.
 
@@ -289,7 +285,7 @@ seqtk subseq input.fasta name.list > output.fasta
 Large language models can be very helpful in troubleshooting bioinformatic pipelines, and I have used them for this purpose often. But, do not be overly reliant on them: they have some major limitations particularly when building large or complex pipelines. Examine and interpret your trees yourself and be skeptical of low support branches. 
 
 ## Further resources
-- PhyloDig repository for automated homology mining. https://github.com/davidjhoey/Phylodig
+- PhyloDig repository: automated database mining for comparative phylogenomics. https://github.com/davidjhoey/Phylodig
 - HMMER documentation. https://github.com/EddyRivasLab/hmmer, cite: doi.org/10.1371/journal.pcbi.1002195
 - MAFFT documentation. https://mafft.cbrc.jp/alignment/software/manual/manual.html, cite: doi:10.1093/molbev/mst010
 - PAL2NAL documentation. https://github.com/liaochenlanruo/PAL2NAL, cite: doi.org/10.1093/nar/gkl315
