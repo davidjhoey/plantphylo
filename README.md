@@ -5,7 +5,9 @@ This pipeline is used regularly by David Hoey.
 # Software installation
 ## Very basic bash command line
 Suppose input file, eg, input.txt, is placed in C:\Users\yourname\DATA
+
 This folder can be accessed from Ubuntu as /mnt/c/Users/yourname/DATA
+
 In short,  C: on Windows = /mnt/c on Ubuntu. 
 
 C:\Users\david\Documents\Applications becomes
@@ -144,7 +146,7 @@ For larger or more divergent gene families, I usually obtain better results usin
 mafft --localpair --maxiterate 1000 input.fasta > alignment.fasta
 ```
 # 4. Alignment trimming
-You can manually trim, although I never got the hang of this. My preferred method is using `TrimAL`:
+You **can** manually trim, although I never got the hang of this. My preferred method is using `TrimAL`:
 ```
 trimal -in input_align.fasta -out output_trim.fasta -fasta -gappyout
 ```
@@ -155,14 +157,17 @@ trimal -in input.file -out output.file -fasta -automated1
 With the gap threshold `-gt` option, you can manually set how much you want to trim off. 
 For example, `-gt 0.8` will remove a column if >20% are gaps.
 ```
-trimal -in input.file -out input.file -gt 0.8
+trimal -in input.file -out output.file -gt 0.8
 ```
 No trimming method is universally optimal. Always inspect the alignment if the results appear unexpected. There are other trimming softwares out there such as `phyx` but I mainly use trimAL 
 
 # 5. Phylogenetic inference
-Once you are happy with your trimming and sequence selection, you can now produce your gene tree using IQ-TREE2. 
+Once you are happy with your trimming and sequence selection, you can now produce your gene tree using IQ-TREE2.
+
 IQ-TREE is the biggest bottleneck so do curate your sequences carefully before this.
+
 Ensure all sequences desired are included before this step as the other steps can be quite fast & trivial once correctly installed.
+
 -T command controls how many CPU cores iqtree uses. If unsure, run -T AUTO. Sometimes IQ-TREE does not like running short alignments with too many cores, AUTO tests the optimum number of threads. For very large phylogenies, these can be carried out on the HPC.
 ## 5.a) Protein trees
 Trees using protein sequences are the most straightforward to produce, and depending on the gene family, you can get all the information you need from it.
@@ -213,11 +218,16 @@ iqtree2 -s cds_trim.fasta -p part.nex -m MFP+MERGE -bb 10000 -nm 10000 -alrt 100
 This should improve branch lengths and bootstrap values substantially.
 
 ## 5.c) Optimising alignments and trimming for better trees (making the best of a bad bunch!)
-Making a phylogeny is an iterative process. 
+Making a phylogeny is an iterative process.
+
 Let's say you have done all of the above and your bootstraps are still a bit rubbish, or you don't think you have resolved the tree fully yet.
-Try first adding or removing some genomes (perhaps some of the less well established genomes which you added are causing problems with aligning or trimming?). 
+
+Try first adding or removing some genomes (perhaps some of the less well established genomes which you added are causing problems with aligning or trimming?).
+
 Sometimes a single mid-quality genome has messed up my alignments completely. Usually the problem is that they are too short after trimming for decent inference.
+
 But - some gene families are indeed just a bit tricky, and require some more systematic analysis of alignments and trimming algorithms.
+
 So, let's do that. First, try a few different algorithms from `mafft`.
 ```
 mkdir align_test
