@@ -1,16 +1,15 @@
 # Molecular Phylogenetics Guide
-This is a practical guide for identifying homologous genes and constructing phylogenetic trees using command line tools. This guide is intended to be from basics, and is aimed at students working with plant genomes - but the workflow is applicable to **any gene family**. This guide also assumes a Linux environment (Ubuntu/WSL or MobaXTerm on Windows), although most commands should also work on MacOS terminal.
+This is a practical guide for identifying homologous genes and constructing phylogenetic trees using command line tools. 
+
+This guide is intended to be from basics, and is aimed at students working with plant genomes - but the workflow is applicable to **any gene family**. This guide also assumes a Linux environment (`Ubuntu/WSL` or `MobaXTerm` on Windows), although most commands should also work on the MacOS terminal.
 This pipeline is used regularly by David Hoey.
 
 # Software installation
 ## Very basic bash command line
-Suppose input file, eg, input.txt, is placed in C:\Users\yourname\DATA
-
-This folder can be accessed from Ubuntu as /mnt/c/Users/yourname/DATA
-
-In short,  C: on Windows = /mnt/c on Ubuntu. 
-
-C:\Users\david\Documents\Applications becomes
+- Suppose input file, e.g., `input.txt`, is placed in `C:\Users\yourname\DATA`
+- This folder can be accessed from Ubuntu as `/mnt/c/Users/yourname/DATA`
+- In short,  `C:` on Windows = `/mnt/c` on Ubuntu. 
+- `C:\Users\david\Documents\Applications` becomes
 ```
 cd /mnt/c/users/david/documents/applications
 ```
@@ -23,6 +22,7 @@ Use above to delete files in case they are incorrectly installed.
 ls
 ```
 Use above to see environment - i.e. the contents of the directory that you are in.
+It means "list", but I like to remember it as "let's see" (!)
 
 ## Installations (conda/homebrew-based)
 Install the following programs before beginning:
@@ -191,7 +191,7 @@ mafft --localpair --maxiterate 1000 prot.fasta > prot_align.fasta
 ```
 pal2nal.pl prot_align.fasta cds.fasta -output fasta > cds_align.fasta
 ```
-- Now you can trim the codon alignment. I still like `-gappyout` for this but try some other options. The longer the post-trim alignment the better.
+- Now you can trim the codon alignment. I still like `-gappyout` for this but try some other options. In my experience, the longer the post-trim alignment, the better. 
 ```
 trimal -in cds_align.fasta -out cds_trim.fasta -gappyout
 ```
@@ -291,15 +291,23 @@ If a suitable outgroup is not available, you can **midpoint root** your tree. Th
 In `iTOL`, you can root a tree by selecting the appropriate branch or clade and use the rooting options. If an outgroup has been included, root the tree on the branch separating the outgroup from the ingroup.
 
 ## 6.b) Interpreting your tree
+### Bootstrap support
 Make sure to include bootstrap values in all phylogeny figures! Whether they are shown numerically or in other representation, I don't really mind.
 
-Bootstraps are usually given as percentages and indicate how frequently a particular branch or relationship is recovered across bootstrap replicates. For example, a value of 95 means that the relationship was recovered in 95% of the bootstrap replicates. As a ballpark, a good tree has most values >80. 
-Bootstrap figures are usually a percentage (i.e. out of 100) of times the simulation of the relationship between sequences ended up in that configuration.
+Bootstraps are usually given as percentages and indicate how frequently a particular branch or relationship is recovered across bootstrap replicates. For example, a value of 95 means that the relationship was recovered in 95% of the bootstrap replicates. 
 
 A poorly supported node means that the analysis does not provide strong evidence for that particular relationship.
 If bootstraps are low, you may still be able to use the tree, but be very careful with your interpretation of low support nodes.
 
 Rooting and branching support answer different questions. Branch support describes how consistently a particular relationship is recovered by the chosen support method, whereas rooting determines how the resulting tree is interpreted. Remember that **all** nodes can be rotated without changing the relationships represented - this is important for understanding your tree. The left-to-right or top-to-bottom order of branches does not, by itself, indicate evolutionary relationships.
+
+### Branch lengths
+Branch lengths represent the amount of evolutionary change inferred along each branch (**not** the passage of time). Very long branches can indicate rapidly evolving sequences, highly divergent sequences, truncated or incorrectly predicted proteins, or alignment problems. Long branches can make inference more difficult, and especially long branches should be investigated rather than interpreted as genuine evolutionary divergence. If your phylogeny has very long or very short branch lengths it is not necessarily a problem, and you can hide the branch lengths from the visualisation if it makes the tree impossible to read. This does not change the underlying tree or analysis, but the resulting figure will show the branching relationships without displaying the inferred amount of evolutionary change.
+
+### Homologs vs orthologs vs paralogs
+It is probably a good idea to cover this briefly here, though you can find much more comprehensive explanations elsewhere.
+
+Homologs are sequences that share a common evolutionary origin. Orthologs are a type of homolog that diverged following a speciation event, whereas paralogs diverged following a gene duplication event. All nodes of a tree are either a duplication event, or a speciation event - however distinguishing these requires comparison with the species relationships and other evidence. 
 
 # Notes
 ## Common pitfalls
@@ -325,12 +333,12 @@ seqtk subseq input.fasta name.list > output.fasta
 Large language models can be very helpful in troubleshooting bioinformatic pipelines, and I have used them for this purpose often. But, do not be overly reliant on them: they have some major limitations particularly when building large or complex pipelines. Examine and interpret your trees yourself and be skeptical of low support branches. 
 
 ## Further resources
-- PhyloDig repository: automated database mining for comparative phylogenomics. https://github.com/davidjhoey/Phylodig
+- PhyloDig repository: automated database mining for comparative phylogenomics. https://github.com/davidjhoey/phylodig
 - HMMER documentation. https://github.com/EddyRivasLab/hmmer, cite: doi.org/10.1371/journal.pcbi.1002195
 - MAFFT documentation. https://mafft.cbrc.jp/alignment/software/manual/manual.html, cite: doi:10.1093/molbev/mst010
 - PAL2NAL documentation. https://github.com/liaochenlanruo/PAL2NAL, cite: doi.org/10.1093/nar/gkl315
 - IQ-TREE documentation. https://iqtree.github.io/doc/, cite: doi.org/10.1093/molbev/msaa015
-- trimAl documentation. https://trimal.readthedocs.io/en/latest/, cite: doi.org/10.1093/bioinformatics/btp348
+- TrimAL documentation. https://trimal.readthedocs.io/en/latest/, cite: doi.org/10.1093/bioinformatics/btp348
 
 ## Referencing this page
 Hoey DJ. plantphylo: Molecular Phylogenetics Guide. GitHub repository: https://github.com/davidjhoey/plantphylo
