@@ -265,11 +265,41 @@ linsi_automated1.fasta  FASTA   Protein       359    8,616       24       24    
 
 # 6. Visualising trees
 
-Visualise treefiles with iTOL (interactive Tree Of Life). https://itol.embl.de/personal_page.cgi
-You can produce some nice images with iTOL web server, its most recent iterations are very good even for large trees.
-`FigTree` is also a nice alternative but I don't use this as much.
-Include bootstrap values in all phylogeny figures! (Whether they are shown numerically or in other representation I don't really mind).
+Visualise treefiles with `iTOL` (interactive Tree Of Life). https://itol.embl.de/personal_page.cgi
+You can produce some nice images with `iTOL` web server, its most recent iterations are very good even for large trees.
+`FigTree` is also a nice alternative although I use `iTOL` more often.
+
+## 6.a) Rooting trees
+'iqtree' produces an unrooted tree by default. An unrooted tree shows the relationships between sequences, but does not indicate the direction of evolutionary divergence. If you don't have an appropriate root, you can still interpret the tree with that limitation.
+
+You can root the tree by including an outgroup. An outgroup is a sequence or a group of sequences which is understood (independently of the tree you are constructing) to fall outside of the group you are investigating. The root is placed on a branch separating the outgroup from the ingroup. The outgroup should be sufficiently closely related that it can be aligned reliably, but sufficiently outside the ingroup that it provides a meaningful rooting point. Your outgroup could be a related group of sequences outside your group of interest, or it can be an homologous sequence from a taxonomically distinct lineage.
+
+```
+                    ┌── Gene A
+                ┌───┤
+                │   └── Gene B
+        ┌───────┤
+        │       │   ┌── Gene C
+        │       └───┤
+        │           └── Gene D
+────────┤
+        │
+        └─────────── Outgroup
+```
+If a suitable outgroup is not available, you can **midpoint root** your tree. This places the root halfway between the longest path between two sequences in the tree. Midpoint rooting can be useful for visualisation, but the position of the root is an assumption rather than an independently supported evolutionary hypothesis. In particular, do not interpret the lineage closest to a midpoint root as the oldest or most ancestral lineage.
+
+In `iTOL`, you can root a tree by selecting the appropriate branch or clade and use the rooting options. If an outgroup has been included, root the tree on the branch separating the outgroup from the ingroup.
+
+## 6.b) Interpreting your tree
+Make sure to include bootstrap values in all phylogeny figures! Whether they are shown numerically or in other representation, I don't really mind.
+
+Bootstraps are usually given as percentages and indicate how frequently a particular branch or relationship is recovered across bootstrap replicates. For example, a value of 95 means that the relationship was recovered in 95% of the bootstrap replicates. As a ballpark, a good tree has most values >80. 
+Bootstrap figures are usually a percentage (i.e. out of 100) of times the simulation of the relationship between sequences ended up in that configuration.
+
+A poorly supported node means that the analysis does not provide strong evidence for that particular relationship.
 If bootstraps are low, you may still be able to use the tree, but be very careful with your interpretation of low support nodes.
+
+Rooting and branching support answer different questions. Branch support describes how consistently a particular relationship is recovered by the chosen support method, whereas rooting determines how the resulting tree is interpreted. Remember that **all** nodes can be rotated without changing the relationships represented - this is important for understanding your tree. The left-to-right or top-to-bottom order of branches does not, by itself, indicate evolutionary relationships.
 
 # Notes
 ## Common pitfalls
