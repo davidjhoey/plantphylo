@@ -301,3 +301,6 @@ Large language models can be very helpful in troubleshooting bioinformatic pipel
 - PAL2NAL documentation. https://github.com/liaochenlanruo/PAL2NAL, cite: doi.org/10.1093/nar/gkl315
 - IQ-TREE documentation. https://iqtree.github.io/doc/, cite: doi.org/10.1093/molbev/msaa015
 - trimAl documentation. https://trimal.readthedocs.io/en/latest/, cite: doi.org/10.1093/bioinformatics/btp348
+
+## Referencing this page
+Hoey DJ. plantphylo: Molecular Phylogenetics Guide. GitHub repository: https://github.com/davidjhoey/plantphylo
