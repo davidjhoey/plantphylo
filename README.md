@@ -309,6 +309,8 @@ It is probably a good idea to cover this briefly here, though you can find much 
 
 Homologs are sequences that share a common evolutionary origin. Orthologs are a type of homolog that diverged following a speciation event, whereas paralogs diverged following a gene duplication event. All nodes of a tree are either a duplication event, or a speciation event - however distinguishing these requires comparison with the species relationships and other evidence. 
 
+The closest sequence to your gene in a tree is not necessarily its ortholog. Gene duplications can produce multiple paralogs within the same species, meaning that orthologous relationships can be more complicated than simply finding the most similar sequence. Lineage-specific duplication or proliferation is quite common and paralogous genes might have different functions within those lineages.
+
 # Notes
 ## Common pitfalls
 The most common causes of bad phylogenies are:
