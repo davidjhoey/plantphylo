@@ -1,7 +1,7 @@
 # Molecular Phylogenetics Guide
 This is a practical guide for identifying homologous genes and constructing phylogenetic trees using command line tools. 
 
-This guide is intended to be from basics, and is aimed at students working with plant genomes - but the workflow is applicable to **any gene family**. This guide also assumes a Linux environment (`Ubuntu/WSL` or `MobaXTerm` on Windows), although most commands should also work on the MacOS terminal.
+This guide is intended to be from basics, and is aimed at students and researchers working with plant genomes - but the workflow is applicable to **any gene family**. This guide also assumes a Linux environment (`Ubuntu/WSL` or `MobaXTerm` on Windows), although most commands should also work on the MacOS terminal.
 This pipeline is used regularly by David Hoey.
 
 # Software installation
@@ -270,7 +270,7 @@ You can produce some nice images with `iTOL` web server, its most recent iterati
 `FigTree` is also a nice alternative although I use `iTOL` more often.
 
 ## 6.a) Rooting trees
-'iqtree' produces an unrooted tree by default. An unrooted tree shows the relationships between sequences, but does not indicate the direction of evolutionary divergence. If you don't have an appropriate root, you can still interpret the tree with that limitation.
+`iqtree` produces an unrooted tree by default. An unrooted tree shows the relationships between sequences, but does not indicate the direction of evolutionary divergence. If you don't have an appropriate root, you can still interpret the tree with that limitation.
 
 You can root the tree by including an outgroup. An outgroup is a sequence or a group of sequences which is understood (independently of the tree you are constructing) to fall outside of the group you are investigating. The root is placed on a branch separating the outgroup from the ingroup. The outgroup should be sufficiently closely related that it can be aligned reliably, but sufficiently outside the ingroup that it provides a meaningful rooting point. Your outgroup could be a related group of sequences outside your group of interest, or it can be an homologous sequence from a taxonomically distinct lineage.
 
@@ -292,7 +292,7 @@ In `iTOL`, you can root a tree by selecting the appropriate branch or clade and 
 
 ## 6.b) Interpreting your tree
 ### Bootstrap support
-Make sure to include bootstrap values in all phylogeny figures! Whether they are shown numerically or in other representation, I don't really mind.
+Make sure to include bootstrap values in all phylogeny figures! Whether they are shown numerically or in other representation, I don't personally mind.
 
 Bootstraps are usually given as percentages and indicate how frequently a particular branch or relationship is recovered across bootstrap replicates. For example, a value of 95 means that the relationship was recovered in 95% of the bootstrap replicates. 
 
